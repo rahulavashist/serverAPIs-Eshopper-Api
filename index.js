@@ -16,7 +16,7 @@ app.use("/public",express.static("public"))
 app.use("/api/maincategory",MaincategoryRoutes)
 app.use("/api/subcategory",SubcategoryRoutes)
 app.use("/api/brand",BrandRoutes)
-app.use("/api/Product",ProductRoutes)
+app.use("/api/product",ProductRoutes)
 
 
 app.listen(80,()=>{console.log(`Server Run on http://localhost:80`)})
