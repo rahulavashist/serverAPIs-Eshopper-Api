@@ -1,14 +1,14 @@
 const express = require("express")
 
 
-const Cart = require("../models/Cart")
+const Wishlist = require("../models/Wishlist")
 
 const router = express.Router()
 
 
 router.post("/", async (req, res) => {
     try {
-        var data = new Cart(req.body)
+        var data = new Wishlist(req.body)
         await data.save()
         res.send({ result: "Done", message: "Record is Created", data: data })
     }
@@ -25,11 +25,7 @@ router.post("/", async (req, res) => {
         res.status(400).send({ result: "Fail", message: error.errors.size.message })
         else if (error.errors.price)
         res.status(400).send({ result: "Fail", message: error.errors.price.message })
-        else if (error.errors.qty)
-        res.status(400).send({ result: "Fail", message: error.errors.qty.message })
-        else if (error.errors.total)
-        res.status(400).send({ result: "Fail", message: error.errors.total.message })
-    else
+         else
             res.status(500).send({ result: "Fail", message: "Internal Server Error" })
 
     }
@@ -37,9 +33,9 @@ router.post("/", async (req, res) => {
 })
 
 
-router.get("/user/:userId", async (req, res) => {
+router.get("/:userId", async (req, res) => {
     try {
-        var data = await Cart.find({userId:req.params.userId}).sort({ _id: -1 })
+        var data = await Wishlist.find({userId:req.params.userId}).sort({ _id: -1 })
         res.send({ result: "Done",total:data.length ,data: data })
 
     } catch (error) {
@@ -47,39 +43,11 @@ router.get("/user/:userId", async (req, res) => {
 
     }
 })
-router.get("/:_id", async (req, res) => {
-    try {
-        var data = await Cart.findOne({ _id: req.params._id })
-        if (data)
-            res.send({ result: "Done", data: data })
-        else
-            res.status(404).send({ result: "Fail", message: "No Record Found" })
 
-    } catch (error) {
-        res.status(500).send({ result: "Fail", message: "Internal Server Error" })
 
-    }
-})
-router.put("/:_id", async (req, res) => {
-    try {
-        var data = await Cart.findOne({ _id: req.params._id })
-        if (data) {
-            data.qty = req.body.qty ?? data.qty
-            data.total = req.body.total ?? data.total
-            await data.save()
-            res.send({ result: "Done", meaaage: "Record is Updated !!" })
-        }
-        else
-            res.status(404).send({ result: "Fail", message: "No Record Found" })
-    }
-    catch (error) {
-        res.status(500).send({ result: "Fail", message: "Internal Server Error" })
-
-    }
-})
 router.delete("/:_id", async (req, res) => {
     try {
-        await Cart.deleteOne({ _id: req.params._id })
+        await Wishlist.deleteOne({ _id: req.params._id })
         res.send({ result: "Done", meaaage: "Record is Deleted !!" })
     }
     catch (error) {
