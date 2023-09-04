@@ -55,7 +55,7 @@ router.put("/:_id", async (req, res) => {
             data.name = req.body.name ?? data.name
             data.status = req.body.status ?? data.status
             await data.save()
-            res.send({ result: "Done", meaaage: "Record is Updated !!" })
+            res.send({ result: "Done", message: "Record is Updated !!" })
         }
         else
             res.status(404).send({ result: "Fail", message: "No Record Found" })
